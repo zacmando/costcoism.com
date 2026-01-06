@@ -7,18 +7,19 @@
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Mono:wght@500&display=swap");
     :root {
-      --bg: #fef8d8;
+      --bg: #ffffff;
       --ink: #0f0f0f;
-      --accent: #ff2d55;
-      --accent-2: #00e27c;
-      --grid: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.08) 0, rgba(0, 0, 0, 0.08) 1px, transparent 1px, transparent 20px);
+      --accent: #e31837; /* Costco red */
+      --accent-2: #005daa; /* Costco blue */
+      --signal: #ffc20e; /* signage yellow */
+      --grid: repeating-linear-gradient(90deg, rgba(0, 93, 170, 0.08) 0, rgba(0, 93, 170, 0.08) 2px, transparent 2px, transparent 22px);
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       background:
         var(--grid),
-        linear-gradient(135deg, #fef8d8 0%, #f6f6ff 70%);
+        linear-gradient(135deg, #ffffff 0%, #f7fbff 50%, #fff6d6 100%);
       color: var(--ink);
       font-family: "Space Grotesk", "DM Mono", "Helvetica Neue", system-ui, -apple-system, sans-serif;
       min-height: 100vh;
@@ -34,7 +35,7 @@
     }
     .card {
       border: 3px solid #0f0f0f;
-      background: #fffbe7;
+      background: #ffffff;
       padding: 1.25rem;
       box-shadow: 10px 10px 0 #0f0f0f;
       position: relative;
@@ -66,7 +67,7 @@
       letter-spacing: 0.05em;
       box-shadow: 4px 4px 0 #0f0f0f;
     }
-    .badge.alt { background: var(--accent-2); }
+    .badge.alt { background: var(--accent-2); color: #ffffff; }
     .hero ul {
       list-style: none;
       padding: 0;
@@ -95,13 +96,13 @@
       text-transform: uppercase;
       box-shadow: 6px 6px 0 #0f0f0f;
     }
-    .btn.alt { background: var(--accent); }
+    .btn.alt { background: var(--accent); color: #ffffff; }
     .btn:hover, .badge:hover { transform: translate(-2px, -2px); transition: transform 120ms ease-out; }
     .marquee {
       overflow: hidden;
       border: 3px solid #0f0f0f;
-      background: #0f0f0f;
-      color: #fef8d8;
+      background: var(--accent);
+      color: #ffffff;
       margin: 1.5rem 0;
     }
     .marquee__inner {
@@ -111,7 +112,7 @@
     }
     .marquee span {
       padding: 0.65rem 1.2rem;
-      border-right: 1px solid rgba(254, 248, 216, 0.3);
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
       font-weight: 700;
       letter-spacing: 0.05em;
       white-space: nowrap;
@@ -123,11 +124,11 @@
       gap: 1rem;
     }
     .panel {
-      background: #0f0f0f;
-      color: #fef8d8;
+      background: var(--accent-2);
+      color: #ffffff;
       padding: 1rem;
       border: 3px solid #0f0f0f;
-      box-shadow: 8px 8px 0 #fef8d8;
+      box-shadow: 8px 8px 0 var(--accent);
       position: relative;
       overflow: hidden;
     }
@@ -135,22 +136,23 @@
     .panel small {
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--accent);
+      color: var(--signal);
       font-weight: 700;
     }
     .panel p { margin: 0.2rem 0 0.5rem; line-height: 1.4; }
     .panel .stripe {
       position: absolute;
       inset: 0;
-      background: repeating-linear-gradient(-45deg, rgba(255, 45, 85, 0.13) 0, rgba(255, 45, 85, 0.13) 10px, transparent 10px, transparent 20px);
+      background: repeating-linear-gradient(-45deg, rgba(255, 194, 14, 0.3) 0, rgba(255, 194, 14, 0.3) 10px, transparent 10px, transparent 20px);
       pointer-events: none;
     }
     .taglist { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
     .tag {
-      border: 2px solid #fef8d8;
+      border: 2px solid #0f0f0f;
       padding: 0.35rem 0.6rem;
       font-size: 0.85rem;
-      background: #0f0f0f;
+      background: var(--signal);
+      color: #0f0f0f;
     }
     .aside {
       position: fixed;
@@ -181,12 +183,12 @@
     }
     .aside p { margin: 0.4rem 0 0; font-size: 0.9rem; }
     .panic {
-      background: #0f0f0f;
-      color: #fef8d8;
+      background: var(--accent);
+      color: #ffffff;
     }
-    .panic .card { background: #fffbf0; box-shadow: 10px 10px 0 #fef8d8; color: #0f0f0f; }
-    .panic .marquee { background: #fef8d8; color: #0f0f0f; }
-    .panic .btn { background: #ff2d55; color: #0f0f0f; }
+    .panic .card { background: #ffffff; box-shadow: 10px 10px 0 var(--accent-2); color: #0f0f0f; }
+    .panic .marquee { background: var(--accent-2); color: #ffffff; }
+    .panic .btn { background: var(--signal); color: #0f0f0f; }
     @media (max-width: 768px) {
       .hero { grid-template-columns: 1fr; }
       .aside { position: static; width: auto; margin-top: 1rem; }
@@ -197,40 +199,40 @@
   <main>
     <div class="hero">
       <div class="card">
-        <div class="badge">Bulk gospel</div>
+        <div class="badge">Warehouse memo</div>
         <h1 class="title">costcoism</h1>
-        <p style="max-width: 34ch;">A loud little manifesto for warehouse romantics and anyone who thinks pallets can be poetry.</p>
+        <p style="max-width: 34ch;">A blunt bulletin for people who prefer pallets and concrete floors to polite lobbies.</p>
         <ul>
-          <li><span class="check"></span><span>Membership optional. Devotion mandatory.</span></li>
-          <li><span class="check"></span><span>Brutalist palette. Surplus attitude.</span></li>
-          <li><span class="check"></span><span>Designed to feel like an aisle map that is slightly wrong.</span></li>
+          <li><span class="check"></span><span>No membership required; commitment is.</span></li>
+          <li><span class="check"></span><span>Brutalist palette. Warehouse mood.</span></li>
+          <li><span class="check"></span><span>Layout should feel like a misprinted aisle map.</span></li>
         </ul>
         <div class="action-row">
-          <a class="btn alt" href="mailto:zac@costcoism.com">Enter the aisles</a>
-          <a class="btn" href="#pantry">Inspect the pallets</a>
+          <a class="btn alt" href="mailto:zac@costcoism.com">Email Zac</a>
+          <a class="btn" href="#pantry">See the floor</a>
         </div>
       </div>
       <div class="card">
-        <div class="badge alt">Today only</div>
-        <p style="font-weight: 700; font-size: 1.1rem; margin: 0.2rem 0 0.6rem;">Drop a note, swap a ritual, or barter for bulk.</p>
+        <div class="badge alt">Restock notice</div>
+        <p style="font-weight: 700; font-size: 1.1rem; margin: 0.2rem 0 0.6rem;">Leave a note, suggest a ritual, trade something in bulk.</p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.5rem;">
-          <div style="border: 2px solid #0f0f0f; padding: 0.6rem; background: #fff;">Shelf talk: <strong>overstocked ideas</strong></div>
-          <div style="border: 2px solid #0f0f0f; padding: 0.6rem; background: #fff;">Sample day: <strong>every day</strong></div>
-          <div style="border: 2px solid #0f0f0f; padding: 0.6rem; background: #fff;">Return policy: <strong>no returns, only loops</strong></div>
+          <div style="border: 2px solid #0f0f0f; padding: 0.6rem; background: #fff;">Shelf talk: <strong>overstock and unfinished thoughts</strong></div>
+          <div style="border: 2px solid #0f0f0f; padding: 0.6rem; background: #fff;">Samples: <strong>always out</strong></div>
+          <div style="border: 2px solid #0f0f0f; padding: 0.6rem; background: #fff;">Return policy: <strong>fix it live</strong></div>
         </div>
-        <p style="margin-top: 0.8rem; font-size: 0.95rem;">This page is a continuous restock. If something feels off-kilter, good. That is the vibe.</p>
+        <p style="margin-top: 0.8rem; font-size: 0.95rem;">Page updates when it wants to. Rough edges are intentional.</p>
       </div>
     </div>
 
     <div class="marquee">
       <div class="marquee__inner">
-        <span>No membership? No problem.</span>
+        <span>No membership required.</span>
         <span>Bulk is a mindset.</span>
-        <span>DIY signage forever.</span>
+        <span>Hard edges, loud shadows.</span>
         <span>Costcoism.com</span>
-        <span>No membership? No problem.</span>
+        <span>No membership required.</span>
         <span>Bulk is a mindset.</span>
-        <span>DIY signage forever.</span>
+        <span>Hard edges, loud shadows.</span>
         <span>Costcoism.com</span>
       </div>
     </div>
@@ -239,34 +241,34 @@
       <div class="panel">
         <div class="stripe"></div>
         <small>Belief stack</small>
-        <h3>Warehouse romance</h3>
-        <p>Low lighting, cold floors, and the hum of forklifts. Costcoism celebrates the industrial tenderness baked into every pallet.</p>
+        <h3>Warehouse mood</h3>
+        <p>Dim light, concrete floors, forklift hum. Industrial calm beats polished gloss.</p>
         <div class="taglist">
-          <span class="tag">11 lb tubs</span>
-          <span class="tag">Hot dog halos</span>
-          <span class="tag">Yellow signs</span>
+          <span class="tag">Concrete floors</span>
+          <span class="tag">Forklift lull</span>
+          <span class="tag">Yellow price tags</span>
         </div>
       </div>
       <div class="panel">
         <div class="stripe"></div>
         <small>Signals</small>
         <h3>Anti-design on purpose</h3>
-        <p>Thick borders, hard shadows, and a grid that refuses to center. This site wants to feel like a receipt printing forever.</p>
+        <p>Thick borders, hard shadows, and a grid that refuses to center. Feels like a receipt that won’t stop printing.</p>
         <div class="taglist">
           <span class="tag">Harsh edges</span>
-          <span class="tag">Hand-scrawled vibes</span>
-          <span class="tag">Maximal contrast</span>
+          <span class="tag">Receipt energy</span>
+          <span class="tag">Deliberate misalignment</span>
         </div>
       </div>
       <div class="panel">
         <div class="stripe"></div>
         <small>Checklist</small>
-        <h3>What you carry out</h3>
-        <p>One oversized idea, three samples you did not ask for, and a receipt long enough to double as wallpaper.</p>
+        <h3>Takeaways</h3>
+        <p>Leave with one oversized idea, a few samples you didn’t plan for, and a receipt-length scroll.</p>
         <div class="taglist">
-          <span class="tag">Pallet poetry</span>
+          <span class="tag">Pallet notes</span>
           <span class="tag">Bulk joy</span>
-          <span class="tag">Return trips</span>
+          <span class="tag">Return trip likely</span>
         </div>
       </div>
     </div>
@@ -275,7 +277,7 @@
   <div class="aside">
     <strong>Flash sale mode</strong>
     <button type="button" data-panic>Make it louder</button>
-    <p id="status">Currently: chill shopper.</p>
+    <p id="status">Currently: idle cart.</p>
   </div>
 
   <script>
@@ -288,7 +290,7 @@
       const isPanic = body.classList.toggle("panic");
       marquee.style.animationDuration = isPanic ? "9s" : "18s";
       panicButton.textContent = isPanic ? "Back to normal" : "Make it louder";
-      status.textContent = isPanic ? "Currently: cart racing." : "Currently: chill shopper.";
+      status.textContent = isPanic ? "Currently: aisle sprint." : "Currently: idle cart.";
     });
   </script>
 </body>
