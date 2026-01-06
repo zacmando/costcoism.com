@@ -5,293 +5,115 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>costcoism</title>
   <style>
-    @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Mono:wght@500&display=swap");
     :root {
-      --bg: #ffffff;
-      --ink: #0f0f0f;
-      --accent: #e31837; /* Costco red */
-      --accent-2: #005daa; /* Costco blue */
-      --signal: #ffc20e; /* signage yellow */
-      --grid: repeating-linear-gradient(90deg, rgba(0, 93, 170, 0.08) 0, rgba(0, 93, 170, 0.08) 2px, transparent 2px, transparent 22px);
+      --red: #e31837;
+      --blue: #005daa;
+      --yellow: #ffc20e;
+      --black: #000000;
     }
-    * { box-sizing: border-box; }
     body {
       margin: 0;
-      background:
-        var(--grid),
-        linear-gradient(135deg, #ffffff 0%, #f7fbff 50%, #fff6d6 100%);
-      color: var(--ink);
-      font-family: "Space Grotesk", "DM Mono", "Helvetica Neue", system-ui, -apple-system, sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    a { color: inherit; text-decoration: none; }
-    main { padding: clamp(1rem, 2vw + 1rem, 3rem); }
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.1fr);
-      gap: 1rem;
-      align-items: end;
-    }
-    .card {
-      border: 3px solid #0f0f0f;
-      background: #ffffff;
-      padding: 1.25rem;
-      box-shadow: 10px 10px 0 #0f0f0f;
-      position: relative;
-    }
-    .card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border: 1px dashed #0f0f0f;
-      pointer-events: none;
-      mix-blend-mode: multiply;
-    }
-    .title {
-      font-size: clamp(2.5rem, 6vw, 4.6rem);
-      line-height: 0.9;
-      letter-spacing: -0.02em;
-      margin: 0.25rem 0;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.35rem 0.8rem;
-      border: 2px solid #0f0f0f;
-      background: var(--accent);
-      text-transform: uppercase;
-      font-weight: 700;
-      font-size: 0.85rem;
-      letter-spacing: 0.05em;
-      box-shadow: 4px 4px 0 #0f0f0f;
-    }
-    .badge.alt { background: var(--accent-2); color: #ffffff; }
-    .hero ul {
-      list-style: none;
       padding: 0;
-      margin: 1rem 0;
-      display: grid;
-      gap: 0.35rem;
+      background: #ffffff;
+      color: var(--black);
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: 16px;
+      line-height: 1.6;
     }
-    .hero li { display: flex; align-items: center; gap: 0.5rem; }
-    .check {
-      width: 0.95rem;
-      height: 0.95rem;
-      border: 2px solid #0f0f0f;
-      background: var(--accent-2);
-      box-shadow: 2px 2px 0 #0f0f0f;
-      flex-shrink: 0;
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 32px 18px 48px;
     }
-    .action-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.9rem 1.2rem;
-      border: 3px solid #0f0f0f;
-      background: #fff;
+    h1, h2, h3 {
       font-weight: 700;
-      text-transform: uppercase;
-      box-shadow: 6px 6px 0 #0f0f0f;
+      margin: 0 0 10px;
     }
-    .btn.alt { background: var(--accent); color: #ffffff; }
-    .btn:hover, .badge:hover { transform: translate(-2px, -2px); transition: transform 120ms ease-out; }
-    .marquee {
-      overflow: hidden;
-      border: 3px solid #0f0f0f;
-      background: var(--accent);
-      color: #ffffff;
-      margin: 1.5rem 0;
+    h1 { font-size: 28px; color: var(--red); }
+    h2 { font-size: 20px; color: var(--blue); }
+    h3 { font-size: 16px; }
+    p { margin: 0 0 14px; }
+    a { color: var(--blue); text-decoration: underline; }
+    a:visited { color: var(--red); }
+    hr {
+      border: none;
+      border-top: 1px solid #000;
+      margin: 18px 0;
     }
-    .marquee__inner {
-      display: flex;
-      width: max-content;
-      animation: ticker 18s linear infinite;
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
     }
-    .marquee span {
-      padding: 0.65rem 1.2rem;
-      border-right: 1px solid rgba(255, 255, 255, 0.2);
-      font-weight: 700;
+    .header small {
+      display: block;
+      color: var(--black);
       letter-spacing: 0.05em;
-      white-space: nowrap;
+      margin-top: 6px;
     }
-    @keyframes ticker { to { transform: translateX(-50%); } }
-    .panels {
+    .columns {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
+      gap: 18px;
+      margin-top: 12px;
     }
-    .panel {
-      background: var(--accent-2);
-      color: #ffffff;
-      padding: 1rem;
-      border: 3px solid #0f0f0f;
-      box-shadow: 8px 8px 0 var(--accent);
-      position: relative;
-      overflow: hidden;
-    }
-    .panel h3 { margin: 0 0 0.25rem; font-size: 1.3rem; }
-    .panel small {
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--signal);
-      font-weight: 700;
-    }
-    .panel p { margin: 0.2rem 0 0.5rem; line-height: 1.4; }
-    .panel .stripe {
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(-45deg, rgba(255, 194, 14, 0.3) 0, rgba(255, 194, 14, 0.3) 10px, transparent 10px, transparent 20px);
-      pointer-events: none;
-    }
-    .taglist { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
-    .tag {
-      border: 2px solid #0f0f0f;
-      padding: 0.35rem 0.6rem;
-      font-size: 0.85rem;
-      background: var(--signal);
-      color: #0f0f0f;
-    }
-    .aside {
-      position: fixed;
-      inset: auto 1rem 1rem auto;
-      width: 180px;
+    .box {
+      border: 1px solid #000;
+      padding: 12px;
       background: #fff;
-      border: 3px solid #0f0f0f;
-      box-shadow: 5px 5px 0 #0f0f0f;
-      padding: 0.75rem;
-      z-index: 10;
     }
-    .aside strong {
-      display: block;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin-bottom: 0.35rem;
-    }
-    .aside button {
-      width: 100%;
-      background: var(--accent);
-      border: 2px solid #0f0f0f;
-      padding: 0.6rem;
+    .note {
+      background: var(--yellow);
+      border-color: #000;
+      padding: 10px 12px;
       font-weight: 700;
-      text-transform: uppercase;
-      box-shadow: 3px 3px 0 #0f0f0f;
-      cursor: pointer;
     }
-    .aside p { margin: 0.4rem 0 0; font-size: 0.9rem; }
-    .panic {
-      background: var(--accent);
-      color: #ffffff;
+    ul {
+      margin: 0 0 10px 16px;
+      padding: 0;
     }
-    .panic .card { background: #ffffff; box-shadow: 10px 10px 0 var(--accent-2); color: #0f0f0f; }
-    .panic .marquee { background: var(--accent-2); color: #ffffff; }
-    .panic .btn { background: var(--signal); color: #0f0f0f; }
-    @media (max-width: 768px) {
-      .hero { grid-template-columns: 1fr; }
-      .aside { position: static; width: auto; margin-top: 1rem; }
-    }
+    li { margin-bottom: 6px; }
   </style>
 </head>
 <body>
-  <main>
-    <div class="hero">
-      <div class="card">
-        <div class="badge">Warehouse memo</div>
-        <h1 class="title">costcoism</h1>
-        <p style="max-width: 34ch;">A blunt bulletin for people who prefer pallets and concrete floors to polite lobbies.</p>
+  <div class="page">
+    <div class="header">
+      <h1>COSTCOISM</h1>
+      <small>Plain notices and warehouse links.</small>
+    </div>
+
+    <hr>
+
+    <div class="note">
+      This site changes rarely. When it does, you will notice.
+    </div>
+
+    <div class="columns" style="margin-top: 18px;">
+      <div class="box">
+        <h2>Contact</h2>
+        <p>Email: <a href="mailto:zac@costcoism.com">zac@costcoism.com</a></p>
+        <p>Replies are not guaranteed.</p>
+      </div>
+      <div class="box">
+        <h2>Log</h2>
         <ul>
-          <li><span class="check"></span><span>No membership required; commitment is.</span></li>
-          <li><span class="check"></span><span>Brutalist palette. Warehouse mood.</span></li>
-          <li><span class="check"></span><span>Layout should feel like a misprinted aisle map.</span></li>
+          <li>Current focus: warehouse calm.</li>
+          <li>Last change: refreshed colors.</li>
+          <li>Next change: undefined.</li>
         </ul>
-        <div class="action-row">
-          <a class="btn alt" href="mailto:zac@costcoism.com">Email Zac</a>
-          <a class="btn" href="#pantry">See the floor</a>
-        </div>
       </div>
-      <div class="card">
-        <div class="badge alt">Restock notice</div>
-        <p style="font-weight: 700; font-size: 1.1rem; margin: 0.2rem 0 0.6rem;">Leave a note, suggest a ritual, trade something in bulk.</p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.5rem;">
-          <div style="border: 2px solid #0f0f0f; padding: 0.6rem; background: #fff;">Shelf talk: <strong>overstock and unfinished thoughts</strong></div>
-          <div style="border: 2px solid #0f0f0f; padding: 0.6rem; background: #fff;">Samples: <strong>always out</strong></div>
-          <div style="border: 2px solid #0f0f0f; padding: 0.6rem; background: #fff;">Return policy: <strong>fix it live</strong></div>
-        </div>
-        <p style="margin-top: 0.8rem; font-size: 0.95rem;">Page updates when it wants to. Rough edges are intentional.</p>
+      <div class="box">
+        <h2>Elsewhere</h2>
+        <p>There are no social links.</p>
       </div>
     </div>
 
-    <div class="marquee">
-      <div class="marquee__inner">
-        <span>No membership required.</span>
-        <span>Bulk is a mindset.</span>
-        <span>Hard edges, loud shadows.</span>
-        <span>Costcoism.com</span>
-        <span>No membership required.</span>
-        <span>Bulk is a mindset.</span>
-        <span>Hard edges, loud shadows.</span>
-        <span>Costcoism.com</span>
-      </div>
-    </div>
+    <hr>
 
-    <div class="panels" id="pantry">
-      <div class="panel">
-        <div class="stripe"></div>
-        <small>Belief stack</small>
-        <h3>Warehouse mood</h3>
-        <p>Dim light, concrete floors, forklift hum. Industrial calm beats polished gloss.</p>
-        <div class="taglist">
-          <span class="tag">Concrete floors</span>
-          <span class="tag">Forklift lull</span>
-          <span class="tag">Yellow price tags</span>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="stripe"></div>
-        <small>Signals</small>
-        <h3>Anti-design on purpose</h3>
-        <p>Thick borders, hard shadows, and a grid that refuses to center. Feels like a receipt that won’t stop printing.</p>
-        <div class="taglist">
-          <span class="tag">Harsh edges</span>
-          <span class="tag">Receipt energy</span>
-          <span class="tag">Deliberate misalignment</span>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="stripe"></div>
-        <small>Checklist</small>
-        <h3>Takeaways</h3>
-        <p>Leave with one oversized idea, a few samples you didn’t plan for, and a receipt-length scroll.</p>
-        <div class="taglist">
-          <span class="tag">Pallet notes</span>
-          <span class="tag">Bulk joy</span>
-          <span class="tag">Return trip likely</span>
-        </div>
-      </div>
+    <div class="box">
+      <h3 style="color: var(--red); margin-bottom: 6px;">Reference</h3>
+      <p>Red, blue, yellow, black, white. Minimal ornament, no effects.</p>
+      <p>This is intentional.</p>
     </div>
-  </main>
-
-  <div class="aside">
-    <strong>Flash sale mode</strong>
-    <button type="button" data-panic>Make it louder</button>
-    <p id="status">Currently: idle cart.</p>
   </div>
-
-  <script>
-    const panicButton = document.querySelector("[data-panic]");
-    const marquee = document.querySelector(".marquee__inner");
-    const status = document.querySelector("#status");
-
-    panicButton.addEventListener("click", () => {
-      const body = document.body;
-      const isPanic = body.classList.toggle("panic");
-      marquee.style.animationDuration = isPanic ? "9s" : "18s";
-      panicButton.textContent = isPanic ? "Back to normal" : "Make it louder";
-      status.textContent = isPanic ? "Currently: aisle sprint." : "Currently: idle cart.";
-    });
-  </script>
 </body>
 </html>
