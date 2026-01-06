@@ -1,10 +1,295 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>costcoism</title>
-  </head>
-  <body style="margin:0;display:flex;align-items:center;justify-content:center;height:100vh;">
-    <h1>costcoism.com</h1>
-  </body>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>costcoism</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Mono:wght@500&display=swap");
+    :root {
+      --bg: #fef8d8;
+      --ink: #0f0f0f;
+      --accent: #ff2d55;
+      --accent-2: #00e27c;
+      --grid: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.08) 0, rgba(0, 0, 0, 0.08) 1px, transparent 1px, transparent 20px);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        var(--grid),
+        linear-gradient(135deg, #fef8d8 0%, #f6f6ff 70%);
+      color: var(--ink);
+      font-family: "Space Grotesk", "DM Mono", "Helvetica Neue", system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    main { padding: clamp(1rem, 2vw + 1rem, 3rem); }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.1fr);
+      gap: 1rem;
+      align-items: end;
+    }
+    .card {
+      border: 3px solid #0f0f0f;
+      background: #fffbe7;
+      padding: 1.25rem;
+      box-shadow: 10px 10px 0 #0f0f0f;
+      position: relative;
+    }
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px dashed #0f0f0f;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+    .title {
+      font-size: clamp(2.5rem, 6vw, 4.6rem);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      margin: 0.25rem 0;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.8rem;
+      border: 2px solid #0f0f0f;
+      background: var(--accent);
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      box-shadow: 4px 4px 0 #0f0f0f;
+    }
+    .badge.alt { background: var(--accent-2); }
+    .hero ul {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+      display: grid;
+      gap: 0.35rem;
+    }
+    .hero li { display: flex; align-items: center; gap: 0.5rem; }
+    .check {
+      width: 0.95rem;
+      height: 0.95rem;
+      border: 2px solid #0f0f0f;
+      background: var(--accent-2);
+      box-shadow: 2px 2px 0 #0f0f0f;
+      flex-shrink: 0;
+    }
+    .action-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.9rem 1.2rem;
+      border: 3px solid #0f0f0f;
+      background: #fff;
+      font-weight: 700;
+      text-transform: uppercase;
+      box-shadow: 6px 6px 0 #0f0f0f;
+    }
+    .btn.alt { background: var(--accent); }
+    .btn:hover, .badge:hover { transform: translate(-2px, -2px); transition: transform 120ms ease-out; }
+    .marquee {
+      overflow: hidden;
+      border: 3px solid #0f0f0f;
+      background: #0f0f0f;
+      color: #fef8d8;
+      margin: 1.5rem 0;
+    }
+    .marquee__inner {
+      display: flex;
+      width: max-content;
+      animation: ticker 18s linear infinite;
+    }
+    .marquee span {
+      padding: 0.65rem 1.2rem;
+      border-right: 1px solid rgba(254, 248, 216, 0.3);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    @keyframes ticker { to { transform: translateX(-50%); } }
+    .panels {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .panel {
+      background: #0f0f0f;
+      color: #fef8d8;
+      padding: 1rem;
+      border: 3px solid #0f0f0f;
+      box-shadow: 8px 8px 0 #fef8d8;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel h3 { margin: 0 0 0.25rem; font-size: 1.3rem; }
+    .panel small {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .panel p { margin: 0.2rem 0 0.5rem; line-height: 1.4; }
+    .panel .stripe {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(-45deg, rgba(255, 45, 85, 0.13) 0, rgba(255, 45, 85, 0.13) 10px, transparent 10px, transparent 20px);
+      pointer-events: none;
+    }
+    .taglist { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
+    .tag {
+      border: 2px solid #fef8d8;
+      padding: 0.35rem 0.6rem;
+      font-size: 0.85rem;
+      background: #0f0f0f;
+    }
+    .aside {
+      position: fixed;
+      inset: auto 1rem 1rem auto;
+      width: 180px;
+      background: #fff;
+      border: 3px solid #0f0f0f;
+      box-shadow: 5px 5px 0 #0f0f0f;
+      padding: 0.75rem;
+      z-index: 10;
+    }
+    .aside strong {
+      display: block;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.35rem;
+    }
+    .aside button {
+      width: 100%;
+      background: var(--accent);
+      border: 2px solid #0f0f0f;
+      padding: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      box-shadow: 3px 3px 0 #0f0f0f;
+      cursor: pointer;
+    }
+    .aside p { margin: 0.4rem 0 0; font-size: 0.9rem; }
+    .panic {
+      background: #0f0f0f;
+      color: #fef8d8;
+    }
+    .panic .card { background: #fffbf0; box-shadow: 10px 10px 0 #fef8d8; color: #0f0f0f; }
+    .panic .marquee { background: #fef8d8; color: #0f0f0f; }
+    .panic .btn { background: #ff2d55; color: #0f0f0f; }
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; }
+      .aside { position: static; width: auto; margin-top: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="hero">
+      <div class="card">
+        <div class="badge">Bulk gospel</div>
+        <h1 class="title">costcoism</h1>
+        <p style="max-width: 34ch;">A loud little manifesto for warehouse romantics and anyone who thinks pallets can be poetry.</p>
+        <ul>
+          <li><span class="check"></span><span>Membership optional. Devotion mandatory.</span></li>
+          <li><span class="check"></span><span>Brutalist palette. Surplus attitude.</span></li>
+          <li><span class="check"></span><span>Designed to feel like an aisle map that is slightly wrong.</span></li>
+        </ul>
+        <div class="action-row">
+          <a class="btn alt" href="mailto:zac@costcoism.com">Enter the aisles</a>
+          <a class="btn" href="#pantry">Inspect the pallets</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="badge alt">Today only</div>
+        <p style="font-weight: 700; font-size: 1.1rem; margin: 0.2rem 0 0.6rem;">Drop a note, swap a ritual, or barter for bulk.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.5rem;">
+          <div style="border: 2px solid #0f0f0f; padding: 0.6rem; background: #fff;">Shelf talk: <strong>overstocked ideas</strong></div>
+          <div style="border: 2px solid #0f0f0f; padding: 0.6rem; background: #fff;">Sample day: <strong>every day</strong></div>
+          <div style="border: 2px solid #0f0f0f; padding: 0.6rem; background: #fff;">Return policy: <strong>no returns, only loops</strong></div>
+        </div>
+        <p style="margin-top: 0.8rem; font-size: 0.95rem;">This page is a continuous restock. If something feels off-kilter, good. That is the vibe.</p>
+      </div>
+    </div>
+
+    <div class="marquee">
+      <div class="marquee__inner">
+        <span>No membership? No problem.</span>
+        <span>Bulk is a mindset.</span>
+        <span>DIY signage forever.</span>
+        <span>Costcoism.com</span>
+        <span>No membership? No problem.</span>
+        <span>Bulk is a mindset.</span>
+        <span>DIY signage forever.</span>
+        <span>Costcoism.com</span>
+      </div>
+    </div>
+
+    <div class="panels" id="pantry">
+      <div class="panel">
+        <div class="stripe"></div>
+        <small>Belief stack</small>
+        <h3>Warehouse romance</h3>
+        <p>Low lighting, cold floors, and the hum of forklifts. Costcoism celebrates the industrial tenderness baked into every pallet.</p>
+        <div class="taglist">
+          <span class="tag">11 lb tubs</span>
+          <span class="tag">Hot dog halos</span>
+          <span class="tag">Yellow signs</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="stripe"></div>
+        <small>Signals</small>
+        <h3>Anti-design on purpose</h3>
+        <p>Thick borders, hard shadows, and a grid that refuses to center. This site wants to feel like a receipt printing forever.</p>
+        <div class="taglist">
+          <span class="tag">Harsh edges</span>
+          <span class="tag">Hand-scrawled vibes</span>
+          <span class="tag">Maximal contrast</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="stripe"></div>
+        <small>Checklist</small>
+        <h3>What you carry out</h3>
+        <p>One oversized idea, three samples you did not ask for, and a receipt long enough to double as wallpaper.</p>
+        <div class="taglist">
+          <span class="tag">Pallet poetry</span>
+          <span class="tag">Bulk joy</span>
+          <span class="tag">Return trips</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="aside">
+    <strong>Flash sale mode</strong>
+    <button type="button" data-panic>Make it louder</button>
+    <p id="status">Currently: chill shopper.</p>
+  </div>
+
+  <script>
+    const panicButton = document.querySelector("[data-panic]");
+    const marquee = document.querySelector(".marquee__inner");
+    const status = document.querySelector("#status");
+
+    panicButton.addEventListener("click", () => {
+      const body = document.body;
+      const isPanic = body.classList.toggle("panic");
+      marquee.style.animationDuration = isPanic ? "9s" : "18s";
+      panicButton.textContent = isPanic ? "Back to normal" : "Make it louder";
+      status.textContent = isPanic ? "Currently: cart racing." : "Currently: chill shopper.";
+    });
+  </script>
+</body>
 </html>
