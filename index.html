@@ -3,117 +3,314 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>costcoism</title>
+  <title>Costco Locations Board</title>
   <style>
     :root {
       --red: #e31837;
       --blue: #005daa;
       --yellow: #ffc20e;
-      --black: #000000;
+      --black: #0b0b0b;
+      --border: #0b0b0b;
+      --muted: #f5f7fb;
     }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: 0;
       background: #ffffff;
       color: var(--black);
-      font-family: "Times New Roman", Georgia, serif;
-      font-size: 16px;
+      font-family: "Helvetica Neue", Arial, sans-serif;
       line-height: 1.6;
     }
-    .page {
+    a { color: var(--blue); }
+    header {
+      border-bottom: 3px solid var(--border);
+      padding: 18px;
+      background: #ffffff;
+    }
+    header h1 {
+      margin: 0 0 6px;
+      font-size: 26px;
+      color: var(--red);
+      letter-spacing: -0.01em;
+    }
+    header p {
+      margin: 0;
       max-width: 780px;
+      color: #222;
+    }
+    main {
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 32px 18px 48px;
-    }
-    h1, h2, h3 {
-      font-weight: 700;
-      margin: 0 0 10px;
-    }
-    h1 { font-size: 28px; color: var(--red); }
-    h2 { font-size: 20px; color: var(--blue); }
-    h3 { font-size: 16px; }
-    p { margin: 0 0 14px; }
-    a { color: var(--blue); text-decoration: underline; }
-    a:visited { color: var(--red); }
-    hr {
-      border: none;
-      border-top: 1px solid #000;
-      margin: 18px 0;
-    }
-    .header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-    .header small {
-      display: block;
-      color: var(--black);
-      letter-spacing: 0.05em;
-      margin-top: 6px;
-    }
-    .columns {
+      padding: 18px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: 320px 1fr;
       gap: 18px;
-      margin-top: 12px;
     }
-    .box {
-      border: 1px solid #000;
-      padding: 12px;
+    @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+    .panel {
+      border: 1.5px solid var(--border);
+      background: #fff;
+      padding: 14px;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.08);
+    }
+    .panel h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: var(--blue);
+      letter-spacing: -0.01em;
+    }
+    .panel h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
+    }
+    .muted {
+      background: var(--muted);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    label { display: block; font-weight: 600; margin: 8px 0 4px; }
+    input, textarea, select {
+      width: 100%;
+      padding: 9px 10px;
+      border: 1px solid #1c1c1c;
+      font: inherit;
       background: #fff;
     }
-    .note {
-      background: var(--yellow);
-      border-color: #000;
-      padding: 10px 12px;
+    textarea { min-height: 96px; resize: vertical; }
+    button {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 14px;
       font-weight: 700;
+      border: 2px solid var(--border);
+      background: var(--red);
+      color: #fff;
+      cursor: pointer;
     }
-    ul {
-      margin: 0 0 10px 16px;
-      padding: 0;
+    button.secondary {
+      background: var(--blue);
     }
-    li { margin-bottom: 6px; }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    .location-item {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      background: #fff;
+      cursor: pointer;
+    }
+    .location-item.active {
+      border-color: var(--blue);
+      box-shadow: inset 3px 0 0 var(--blue);
+      background: #eef3fc;
+    }
+    .location-item h3 { margin: 0 0 4px; }
+    .location-meta { font-size: 13px; color: #444; }
+    .empty { padding: 12px; border: 1px dashed #555; font-size: 14px; }
+    .post {
+      border: 1px solid var(--border);
+      padding: 12px;
+      margin-bottom: 12px;
+      background: #fff;
+      border-left: 4px solid var(--blue);
+    }
+    .post h4 { margin: 0 0 6px; font-size: 16px; }
+    .post .price { font-weight: 700; color: var(--red); }
+    .post img {
+      max-width: 100%;
+      border: 1px solid #000;
+      margin-top: 8px;
+    }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="header">
-      <h1>COSTCOISM</h1>
-      <small>Plain notices and warehouse links.</small>
-    </div>
+  <header>
+    <h1>Costco Locations Board</h1>
+    <p>Add a Costco location. Share images, prices, and short reviews on that location’s feed.</p>
+  </header>
 
-    <hr>
+  <main>
+    <section class="panel">
+      <div class="muted">Pick a location or add a new one.</div>
+      <h2>Locations</h2>
+      <ul id="location-list"></ul>
 
-    <div class="note">
-      This site changes rarely. When it does, you will notice.
-    </div>
+      <hr style="margin: 14px 0; border: none; border-top: 1px solid #000;">
 
-    <div class="columns" style="margin-top: 18px;">
-      <div class="box">
-        <h2>Contact</h2>
-        <p>Email: <a href="mailto:zac@costcoism.com">zac@costcoism.com</a></p>
-        <p>Replies are not guaranteed.</p>
+      <h3>Add location</h3>
+      <form id="location-form">
+        <label for="loc-name">Store name</label>
+        <input id="loc-name" name="name" required placeholder="Example: Seattle Central">
+
+        <label for="loc-city">City</label>
+        <input id="loc-city" name="city" required placeholder="City">
+
+        <label for="loc-state">State/Province</label>
+        <input id="loc-state" name="state" required placeholder="State or Province">
+
+        <button type="submit">Add location</button>
+      </form>
+    </section>
+
+    <section class="panel" id="content">
+      <div id="active-location"></div>
+      <div id="posts"></div>
+
+      <div style="margin-top: 14px;">
+        <h3>Add to this feed</h3>
+        <form id="post-form">
+          <label for="post-title">Title</label>
+          <input id="post-title" name="title" required placeholder="What you are posting">
+
+          <label for="post-price">Price (optional)</label>
+          <input id="post-price" name="price" placeholder="$9.99">
+
+          <label for="post-note">Notes</label>
+          <textarea id="post-note" name="note" required placeholder="Short review or context"></textarea>
+
+          <label for="post-image">Image URL (optional)</label>
+          <input id="post-image" name="image" placeholder="https://example.com/photo.jpg">
+
+          <button type="submit" class="secondary">Post</button>
+        </form>
       </div>
-      <div class="box">
-        <h2>Log</h2>
-        <ul>
-          <li>Current focus: warehouse calm.</li>
-          <li>Last change: refreshed colors.</li>
-          <li>Next change: undefined.</li>
-        </ul>
-      </div>
-      <div class="box">
-        <h2>Elsewhere</h2>
-        <p>There are no social links.</p>
-      </div>
-    </div>
+    </section>
+  </main>
 
-    <hr>
+  <script>
+    const state = {
+      locations: [
+        {
+          id: "seattle-wa",
+          name: "Seattle Central",
+          city: "Seattle",
+          state: "WA",
+          posts: [
+            { id: "p1", title: "Rotisserie chicken", price: "$4.99", note: "Hot and ready at 5 pm.", image: "" },
+            { id: "p2", title: "Gas price", price: "$3.89", note: "Regular, afternoon price.", image: "" }
+          ]
+        },
+        {
+          id: "brooklyn-ny",
+          name: "Brooklyn",
+          city: "Brooklyn",
+          state: "NY",
+          posts: [
+            { id: "p3", title: "Kirkland socks", price: "$12.99", note: "Full stock in aisle 221.", image: "" }
+          ]
+        }
+      ],
+      activeId: "seattle-wa"
+    };
 
-    <div class="box">
-      <h3 style="color: var(--red); margin-bottom: 6px;">Reference</h3>
-      <p>Red, blue, yellow, black, white. Minimal ornament, no effects.</p>
-      <p>This is intentional.</p>
-    </div>
-  </div>
+    const locationListEl = document.getElementById("location-list");
+    const activeLocationEl = document.getElementById("active-location");
+    const postsEl = document.getElementById("posts");
+    const locationForm = document.getElementById("location-form");
+    const postForm = document.getElementById("post-form");
+
+    function slugify(str) {
+      return str.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || `loc-${Date.now()}`;
+    }
+
+    function setActive(id) {
+      state.activeId = id;
+      render();
+    }
+
+    function renderLocations() {
+      locationListEl.innerHTML = "";
+      if (!state.locations.length) {
+        const li = document.createElement("li");
+        li.className = "empty";
+        li.textContent = "No locations yet.";
+        locationListEl.appendChild(li);
+        return;
+      }
+
+      state.locations.forEach((loc) => {
+        const li = document.createElement("li");
+        li.className = "location-item" + (loc.id === state.activeId ? " active" : "");
+        li.innerHTML = `
+          <h3>${loc.name}</h3>
+          <div class="location-meta">${loc.city}, ${loc.state}</div>
+          <div class="location-meta">${loc.posts.length} post${loc.posts.length === 1 ? "" : "s"}</div>
+        `;
+        li.addEventListener("click", () => setActive(loc.id));
+        locationListEl.appendChild(li);
+      });
+    }
+
+    function renderActive() {
+      const loc = state.locations.find((l) => l.id === state.activeId);
+      if (!loc) {
+        activeLocationEl.innerHTML = '<div class="empty">Select or add a location.</div>';
+        postsEl.innerHTML = "";
+        return;
+      }
+      activeLocationEl.innerHTML = `
+        <h2 style="margin:0 0 6px; color: var(--blue);">${loc.name}</h2>
+        <div class="location-meta" style="margin-bottom: 8px;">${loc.city}, ${loc.state}</div>
+      `;
+
+      postsEl.innerHTML = "";
+      if (!loc.posts.length) {
+        postsEl.innerHTML = '<div class="empty">No posts yet.</div>';
+        return;
+      }
+
+      loc.posts.slice().reverse().forEach((post) => {
+        const div = document.createElement("div");
+        div.className = "post";
+        div.innerHTML = `
+          <h4>${post.title}</h4>
+          ${post.price ? `<div class="price">${post.price}</div>` : ""}
+          <p style="margin:6px 0 0;">${post.note}</p>
+          ${post.image ? `<img src="${post.image}" alt="${post.title}">` : ""}
+        `;
+        postsEl.appendChild(div);
+      });
+    }
+
+    function render() {
+      renderLocations();
+      renderActive();
+    }
+
+    locationForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = e.target.name.value.trim();
+      const city = e.target.city.value.trim();
+      const stateCode = e.target.state.value.trim();
+      if (!name || !city || !stateCode) return;
+      const id = slugify(`${name}-${city}-${stateCode}`);
+      if (state.locations.some((l) => l.id === id)) {
+        alert("Location already exists.");
+        return;
+      }
+      state.locations.push({ id, name, city, state: stateCode, posts: [] });
+      state.activeId = id;
+      e.target.reset();
+      render();
+    });
+
+    postForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const loc = state.locations.find((l) => l.id === state.activeId);
+      if (!loc) return;
+      const title = e.target.title.value.trim();
+      const price = e.target.price.value.trim();
+      const note = e.target.note.value.trim();
+      const image = e.target.image.value.trim();
+      if (!title || !note) return;
+      loc.posts.push({ id: `p-${Date.now()}`, title, price, note, image });
+      e.target.reset();
+      renderActive();
+    });
+
+    render();
+  </script>
 </body>
 </html>
