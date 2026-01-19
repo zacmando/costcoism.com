@@ -10,7 +10,6 @@
       --blue: #005daa;
       --yellow: #ffc20e;
       --black: #0b0b0b;
-      --border: #0b0b0b;
       --muted: #f5f7fb;
     }
     * { box-sizing: border-box; }
@@ -23,24 +22,21 @@
     }
     a { color: var(--blue); }
     header {
-      border-bottom: 3px solid var(--border);
+      border-bottom: 3px solid var(--black);
       padding: 18px;
-      background: #ffffff;
+    }
+    header .wrap, main {
+      max-width: 1100px;
+      margin: 0 auto;
     }
     header h1 {
       margin: 0 0 6px;
       font-size: 26px;
-      color: var(--red);
       letter-spacing: -0.01em;
+      color: var(--red);
     }
-    header p {
-      margin: 0;
-      max-width: 780px;
-      color: #222;
-    }
+    header p { margin: 0; max-width: 860px; }
     main {
-      max-width: 1080px;
-      margin: 0 auto;
       padding: 18px;
       display: grid;
       grid-template-columns: 320px 1fr;
@@ -48,13 +44,13 @@
     }
     @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
     .panel {
-      border: 1.5px solid var(--border);
+      border: 1.5px solid var(--black);
       background: #fff;
       padding: 14px;
       box-shadow: 4px 4px 0 rgba(0,0,0,0.08);
     }
     .panel h2 {
-      margin: 0 0 8px;
+      margin: 0 0 10px;
       font-size: 18px;
       color: var(--blue);
       letter-spacing: -0.01em;
@@ -63,15 +59,18 @@
       margin: 0 0 6px;
       font-size: 15px;
     }
-    .muted {
-      background: var(--muted);
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      font-size: 14px;
-      margin-bottom: 12px;
+    .band {
+      display: inline-block;
+      padding: 6px 10px;
+      font-weight: 700;
+      border: 1px solid var(--black);
+      margin-bottom: 10px;
     }
+    .band.blue { background: var(--blue); color: #fff; }
+    .band.red { background: var(--red); color: #fff; }
+    .band.yellow { background: var(--yellow); }
     label { display: block; font-weight: 600; margin: 8px 0 4px; }
-    input, textarea, select {
+    input, textarea {
       width: 100%;
       padding: 9px 10px;
       border: 1px solid #1c1c1c;
@@ -84,33 +83,45 @@
       margin-top: 10px;
       padding: 10px 14px;
       font-weight: 700;
-      border: 2px solid var(--border);
+      border: 2px solid var(--black);
       background: var(--red);
       color: #fff;
       cursor: pointer;
     }
-    button.secondary {
-      background: var(--blue);
-    }
+    button.secondary { background: var(--blue); }
+    button.ghost { background: #fff; color: var(--black); }
     button:disabled { opacity: 0.6; cursor: not-allowed; }
-    ul { list-style: none; padding: 0; margin: 0; }
-    .location-item {
-      border: 1px solid var(--border);
+    .list { display: grid; gap: 8px; margin-top: 8px; }
+    .item {
+      border: 1px solid var(--black);
       padding: 10px 12px;
-      margin-bottom: 8px;
       background: #fff;
       cursor: pointer;
     }
-    .location-item.active {
+    .item.active {
       border-color: var(--blue);
       box-shadow: inset 3px 0 0 var(--blue);
       background: #eef3fc;
     }
-    .location-item h3 { margin: 0 0 4px; }
-    .location-meta { font-size: 13px; color: #444; }
-    .empty { padding: 12px; border: 1px dashed #555; font-size: 14px; }
+    .item h3 { margin: 0 0 4px; font-size: 15px; }
+    .meta { font-size: 13px; color: #444; }
+    .empty {
+      padding: 12px;
+      border: 1px dashed #555;
+      font-size: 14px;
+      background: #fff;
+    }
+    .status {
+      padding: 10px 12px;
+      border: 1px solid var(--black);
+      margin: 10px 0;
+      background: var(--muted);
+      font-size: 14px;
+    }
+    .status[data-tone="error"] { border-color: var(--red); color: var(--red); }
+    .status[data-tone="warn"] { border-color: var(--yellow); }
     .post {
-      border: 1px solid var(--border);
+      border: 1px solid var(--black);
       padding: 12px;
       margin-bottom: 12px;
       background: #fff;
@@ -123,43 +134,85 @@
       border: 1px solid #000;
       margin-top: 8px;
     }
+    .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .label { font-weight: 700; }
+    .muted { font-size: 13px; color: #444; }
+    .stack { margin-top: 12px; }
   </style>
 </head>
 <body>
   <header>
-    <h1>Costco Locations Board</h1>
-    <p>Add a Costco location. Share images, prices, and short reviews on that location’s feed.</p>
+    <div class="wrap">
+      <h1>Costco Locations Board</h1>
+      <p>Sign in, add Costco locations, and share images, prices, and short reviews for each store.</p>
+    </div>
   </header>
 
   <main>
     <section class="panel">
-      <div class="muted">Pick a location or add a new one.</div>
-      <h2>Locations</h2>
-      <ul id="location-list"></ul>
+      <span class="band yellow">Account</span>
+      <div class="row" style="margin-bottom: 10px;">
+        <span class="label">Signed in:</span>
+        <span id="user-email">Not signed in</span>
+      </div>
+      <button id="signout-btn" class="ghost" style="margin-bottom: 10px;">Sign out</button>
 
-      <hr style="margin: 14px 0; border: none; border-top: 1px solid #000;">
+      <div class="stack">
+        <h3>Sign in</h3>
+        <form id="signin-form">
+          <label for="signin-email">Email</label>
+          <input id="signin-email" name="email" type="email" required autocomplete="username">
+          <label for="signin-pass">Password</label>
+          <input id="signin-pass" name="password" type="password" required autocomplete="current-password">
+          <button type="submit">Sign in</button>
+        </form>
+      </div>
 
-      <h3>Add location</h3>
-      <form id="location-form">
-        <label for="loc-name">Store name</label>
-        <input id="loc-name" name="name" required placeholder="Example: Seattle Central">
-
-        <label for="loc-city">City</label>
-        <input id="loc-city" name="city" required placeholder="City">
-
-        <label for="loc-state">State/Province</label>
-        <input id="loc-state" name="state" required placeholder="State or Province">
-
-        <button type="submit">Add location</button>
-      </form>
+      <div class="stack">
+        <h3>Create account</h3>
+        <form id="signup-form">
+          <label for="signup-email">Email</label>
+          <input id="signup-email" name="email" type="email" required autocomplete="username">
+          <label for="signup-pass">Password</label>
+          <input id="signup-pass" name="password" type="password" required autocomplete="new-password">
+          <button type="submit" class="secondary">Create account</button>
+        </form>
+      </div>
+      <p class="muted" style="margin-top: 12px;">Auth and data run through Supabase. Keys are set in this page.</p>
     </section>
 
-    <section class="panel" id="content">
-      <div id="active-location"></div>
+    <section class="panel">
+      <span class="band blue">Locations</span>
+      <div id="location-list" class="list"></div>
+      <button id="refresh-btn" class="ghost">Refresh</button>
+
+      <div class="stack">
+        <h3>Add location</h3>
+        <form id="location-form">
+          <label for="loc-name">Store name</label>
+          <input id="loc-name" name="name" required placeholder="Example: Seattle Central">
+
+          <label for="loc-city">City</label>
+          <input id="loc-city" name="city" required placeholder="City">
+
+          <label for="loc-state">State/Province</label>
+          <input id="loc-state" name="state" required placeholder="State or Province">
+
+          <button type="submit" class="secondary">Add location</button>
+        </form>
+        <p class="muted">Sign in to add or edit.</p>
+      </div>
+    </section>
+
+    <section class="panel" style="grid-column: span 2;">
+      <span class="band red">Location feed</span>
+      <div id="status" class="status" data-tone="info">Loading…</div>
+
+      <div id="active-location" style="margin-bottom: 10px;"></div>
       <div id="posts"></div>
 
-      <div style="margin-top: 14px;">
-        <h3>Add to this feed</h3>
+      <div class="stack">
+        <h3>Add post</h3>
         <form id="post-form">
           <label for="post-title">Title</label>
           <input id="post-title" name="title" required placeholder="What you are posting">
@@ -173,144 +226,269 @@
           <label for="post-image">Image URL (optional)</label>
           <input id="post-image" name="image" placeholder="https://example.com/photo.jpg">
 
-          <button type="submit" class="secondary">Post</button>
+          <button type="submit">Post</button>
         </form>
+        <p class="muted">Posts are tied to the selected location.</p>
       </div>
     </section>
   </main>
 
-  <script>
-    const state = {
-      locations: [
-        {
-          id: "seattle-wa",
-          name: "Seattle Central",
-          city: "Seattle",
-          state: "WA",
-          posts: [
-            { id: "p1", title: "Rotisserie chicken", price: "$4.99", note: "Hot and ready at 5 pm.", image: "" },
-            { id: "p2", title: "Gas price", price: "$3.89", note: "Regular, afternoon price.", image: "" }
-          ]
-        },
-        {
-          id: "brooklyn-ny",
-          name: "Brooklyn",
-          city: "Brooklyn",
-          state: "NY",
-          posts: [
-            { id: "p3", title: "Kirkland socks", price: "$12.99", note: "Full stock in aisle 221.", image: "" }
-          ]
-        }
-      ],
-      activeId: "seattle-wa"
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    const supabaseUrl = window.SUPABASE_URL || "YOUR_SUPABASE_URL";
+    const supabaseAnonKey = window.SUPABASE_ANON_KEY || "YOUR_SUPABASE_ANON_KEY";
+    const missingConfig = !supabaseUrl || supabaseUrl.startsWith("YOUR_") || supabaseAnonKey.startsWith("YOUR_");
+    const supabase = missingConfig ? null : createClient(supabaseUrl, supabaseAnonKey);
+
+    const state = { session: null, locations: [], activeId: null, posts: [] };
+
+    const els = {
+      userEmail: document.getElementById("user-email"),
+      signoutBtn: document.getElementById("signout-btn"),
+      signinForm: document.getElementById("signin-form"),
+      signupForm: document.getElementById("signup-form"),
+      locationList: document.getElementById("location-list"),
+      locationForm: document.getElementById("location-form"),
+      refreshBtn: document.getElementById("refresh-btn"),
+      activeLocation: document.getElementById("active-location"),
+      posts: document.getElementById("posts"),
+      postForm: document.getElementById("post-form"),
+      status: document.getElementById("status"),
     };
 
-    const locationListEl = document.getElementById("location-list");
-    const activeLocationEl = document.getElementById("active-location");
-    const postsEl = document.getElementById("posts");
-    const locationForm = document.getElementById("location-form");
-    const postForm = document.getElementById("post-form");
-
-    function slugify(str) {
-      return str.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || `loc-${Date.now()}`;
+    function setStatus(message, tone = "info") {
+      els.status.textContent = message;
+      els.status.dataset.tone = tone;
     }
 
-    function setActive(id) {
-      state.activeId = id;
-      render();
+    function toggleProtected(disabled) {
+      [els.locationForm, els.postForm].forEach((form) => {
+        form.querySelectorAll?.("input, textarea, button").forEach((el) => (el.disabled = disabled));
+      });
+      els.signoutBtn.disabled = disabled;
     }
 
     function renderLocations() {
-      locationListEl.innerHTML = "";
+      els.locationList.innerHTML = "";
       if (!state.locations.length) {
-        const li = document.createElement("li");
-        li.className = "empty";
-        li.textContent = "No locations yet.";
-        locationListEl.appendChild(li);
+        const div = document.createElement("div");
+        div.className = "empty";
+        div.textContent = "No locations yet.";
+        els.locationList.appendChild(div);
         return;
       }
-
       state.locations.forEach((loc) => {
-        const li = document.createElement("li");
-        li.className = "location-item" + (loc.id === state.activeId ? " active" : "");
-        li.innerHTML = `
+        const div = document.createElement("div");
+        div.className = "item" + (loc.id === state.activeId ? " active" : "");
+        const count = loc.post_count ?? 0;
+        div.innerHTML = `
           <h3>${loc.name}</h3>
-          <div class="location-meta">${loc.city}, ${loc.state}</div>
-          <div class="location-meta">${loc.posts.length} post${loc.posts.length === 1 ? "" : "s"}</div>
+          <div class="meta">${loc.city}, ${loc.state}</div>
+          <div class="meta">${count} post${count === 1 ? "" : "s"}</div>
         `;
-        li.addEventListener("click", () => setActive(loc.id));
-        locationListEl.appendChild(li);
+        div.addEventListener("click", () => {
+          state.activeId = loc.id;
+          renderLocations();
+          loadPosts();
+        });
+        els.locationList.appendChild(div);
       });
     }
 
     function renderActive() {
       const loc = state.locations.find((l) => l.id === state.activeId);
       if (!loc) {
-        activeLocationEl.innerHTML = '<div class="empty">Select or add a location.</div>';
-        postsEl.innerHTML = "";
+        els.activeLocation.innerHTML = '<div class="empty">Select a location.</div>';
+        els.posts.innerHTML = "";
         return;
       }
-      activeLocationEl.innerHTML = `
+      els.activeLocation.innerHTML = `
         <h2 style="margin:0 0 6px; color: var(--blue);">${loc.name}</h2>
-        <div class="location-meta" style="margin-bottom: 8px;">${loc.city}, ${loc.state}</div>
+        <div class="meta" style="margin-bottom: 8px;">${loc.city}, ${loc.state}</div>
       `;
+    }
 
-      postsEl.innerHTML = "";
-      if (!loc.posts.length) {
-        postsEl.innerHTML = '<div class="empty">No posts yet.</div>';
+    function renderPosts() {
+      els.posts.innerHTML = "";
+      if (!state.posts.length) {
+        els.posts.innerHTML = '<div class="empty">No posts yet.</div>';
         return;
       }
-
-      loc.posts.slice().reverse().forEach((post) => {
+      state.posts.forEach((post) => {
         const div = document.createElement("div");
         div.className = "post";
         div.innerHTML = `
           <h4>${post.title}</h4>
           ${post.price ? `<div class="price">${post.price}</div>` : ""}
           <p style="margin:6px 0 0;">${post.note}</p>
-          ${post.image ? `<img src="${post.image}" alt="${post.title}">` : ""}
+          ${post.image_url ? `<img src="${post.image_url}" alt="${post.title}">` : ""}
+          <div class="meta" style="margin-top:6px;">${new Date(post.created_at).toLocaleString()}</div>
         `;
-        postsEl.appendChild(div);
+        els.posts.appendChild(div);
       });
     }
 
-    function render() {
-      renderLocations();
-      renderActive();
+    async function loadSession() {
+      if (!supabase) return;
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        setStatus("Could not load session.", "error");
+        return;
+      }
+      state.session = data.session;
+      els.userEmail.textContent = state.session?.user?.email || "Not signed in";
+      toggleProtected(!state.session);
     }
 
-    locationForm.addEventListener("submit", (e) => {
+    async function loadLocations() {
+      if (!supabase) return;
+      setStatus("Loading locations…");
+      const { data, error } = await supabase
+        .from("locations")
+        .select("id, name, city, state, created_at, posts:posts(count)")
+        .order("created_at", { ascending: false });
+      if (error) {
+        setStatus("Could not load locations.", "error");
+        return;
+      }
+      state.locations = data.map((loc) => ({
+        ...loc,
+        post_count: Array.isArray(loc.posts) && loc.posts.length ? loc.posts[0].count : 0,
+      }));
+      if (!state.activeId && state.locations.length) state.activeId = state.locations[0].id;
+      renderLocations();
+      renderActive();
+      await loadPosts();
+      setStatus("Ready.");
+    }
+
+    async function loadPosts() {
+      if (!supabase || !state.activeId) return;
+      setStatus("Loading posts…");
+      const { data, error } = await supabase
+        .from("posts")
+        .select("id, title, price, note, image_url, created_at")
+        .eq("location_id", state.activeId)
+        .order("created_at", { ascending: false });
+      if (error) {
+        setStatus("Could not load posts.", "error");
+        return;
+      }
+      state.posts = data || [];
+      renderPosts();
+      setStatus("Ready.");
+    }
+
+    els.signinForm.addEventListener("submit", async (e) => {
       e.preventDefault();
+      if (!supabase) return setStatus("Add Supabase credentials first.", "warn");
+      const email = e.target.email.value.trim();
+      const password = e.target.password.value;
+      setStatus("Signing in…");
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        setStatus(error.message, "error");
+      } else {
+        setStatus("Signed in.");
+        e.target.reset();
+        await loadSession();
+        await loadLocations();
+      }
+    });
+
+    els.signupForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!supabase) return setStatus("Add Supabase credentials first.", "warn");
+      const email = e.target.email.value.trim();
+      const password = e.target.password.value;
+      setStatus("Creating account…");
+      const { error } = await supabase.auth.signUp({ email, password });
+      if (error) {
+        setStatus(error.message, "error");
+      } else {
+        setStatus("Check your email to confirm the account.");
+        e.target.reset();
+      }
+    });
+
+    els.signoutBtn.addEventListener("click", async () => {
+      if (!supabase) return;
+      await supabase.auth.signOut();
+      state.session = null;
+      state.posts = [];
+      els.userEmail.textContent = "Not signed in";
+      toggleProtected(true);
+      renderPosts();
+      setStatus("Signed out.");
+    });
+
+    els.locationForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!supabase || !state.session) return setStatus("Sign in to add a location.", "warn");
       const name = e.target.name.value.trim();
       const city = e.target.city.value.trim();
       const stateCode = e.target.state.value.trim();
       if (!name || !city || !stateCode) return;
-      const id = slugify(`${name}-${city}-${stateCode}`);
-      if (state.locations.some((l) => l.id === id)) {
-        alert("Location already exists.");
+      setStatus("Saving location…");
+      const { data, error } = await supabase
+        .from("locations")
+        .insert({ name, city, state: stateCode })
+        .select("id, name, city, state, created_at");
+      if (error) {
+        setStatus(error.message, "error");
         return;
       }
-      state.locations.push({ id, name, city, state: stateCode, posts: [] });
-      state.activeId = id;
       e.target.reset();
-      render();
+      setStatus("Location added.");
+      await loadLocations();
+      if (data && data[0]) {
+        state.activeId = data[0].id;
+        await loadPosts();
+      }
     });
 
-    postForm.addEventListener("submit", (e) => {
+    els.postForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const loc = state.locations.find((l) => l.id === state.activeId);
-      if (!loc) return;
+      if (!supabase || !state.session) return setStatus("Sign in to post.", "warn");
+      if (!state.activeId) return setStatus("Select a location first.", "warn");
       const title = e.target.title.value.trim();
       const price = e.target.price.value.trim();
       const note = e.target.note.value.trim();
-      const image = e.target.image.value.trim();
+      const image_url = e.target.image.value.trim();
       if (!title || !note) return;
-      loc.posts.push({ id: `p-${Date.now()}`, title, price, note, image });
+      setStatus("Saving post…");
+      const { error } = await supabase
+        .from("posts")
+        .insert({ title, price, note, image_url, location_id: state.activeId });
+      if (error) {
+        setStatus(error.message, "error");
+        return;
+      }
       e.target.reset();
-      renderActive();
+      setStatus("Post added.");
+      await loadPosts();
     });
 
-    render();
+    els.refreshBtn.addEventListener("click", () => {
+      if (!supabase) return;
+      loadLocations();
+    });
+
+    if (missingConfig) {
+      setStatus("Add your Supabase URL and anon key in this file or via window.SUPABASE_URL/SUPABASE_ANON_KEY.", "warn");
+      toggleProtected(true);
+    } else {
+      setStatus("Loading…");
+      toggleProtected(true);
+      supabase.auth.onAuthStateChange((_event, session) => {
+        state.session = session;
+        els.userEmail.textContent = session?.user?.email || "Not signed in";
+        toggleProtected(!session);
+        if (session) loadLocations();
+      });
+      loadSession().then(() => loadLocations());
+    }
   </script>
 </body>
 </html>
